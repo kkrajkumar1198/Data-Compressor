@@ -1,1 +1,3 @@
 # Zocket
+
+After the installation is complete, your folder should contain two files: go.mod and go.sum. Both of these files contain information about the packages you installed, which is helpful when working with other developers. If somebody wants to contribute to the project, all they need to do is run the go mod download command on their terminal to install all the required dependencies on their machine.
