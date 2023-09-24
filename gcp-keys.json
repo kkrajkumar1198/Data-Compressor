@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "zocket-400012",
+  "private_key_id": "d972f3cb9cf8c87fe98dc6595e602be96a611124",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCXHgvCDfeDOTqu\nFRQQk0oXKTAOAFnKShkmrOeVvh1Vf9TLewSAL/GAbctfZNWEXjMiQZG7S3LlsjM5\n0AbKbFwtMwalCnlmXcqyMyjfmNtCNUzCqQxEGVuX0JrqLf0JQXBS3QmE3xUmZIUH\nykQkSh0eTr+JkbCX+l5NC3EyfCbHGeuankPc5RBusHqHdtL3+rckik7Gl7n3ST01\n4kvIJSn+noqky77gVr50H60s+Gkz2i4Ora+gmY8w/U0yPOnLjvKo2mFqYKA4V8x4\nCodjfewxSlnrzUe+qwwZRDq8SxlGGPmNGKARKJIg+2XOiKBs1D/gTl8nbyo6y5Db\n5e2JdMjlAgMBAAECggEADrRMvpgvUmR6MkA40JgUaIaId4RPOGDXa6z9Z9O09QHY\nSehxequvmyiT1ndwU037OcUZkhj4WCNr2p9EWeQLYBaL+fk38N8Ffyt9OaydASdA\njdx3JhU1lWMl/81zxrfIXzfE2ln+q9qyGxzyXnmbtbxB5Pf5MACbtnF7lUcBWvQj\nXd8+V1b9+CPzt6UX37CZusxt+VD7Oo2wdK7QsPaeDolrROBwFnMOyEt+LjBHUKMn\nGpyBSG82LIIR4FnAPVA95j7lcmbJSitBav+sItTKmiLcugwqMjbGQoWr8mBaY6Cr\nBPie93uMcadxdpL0E6JZMkbdKuhECVgJiTquYvpmQQKBgQDR9BvQYcJtdvD/w7XI\nnNdoGieVzr01LqQBrzKINhvv9KaH0XGg5ozBijnaehQS6H2fZ55lNuDBT8LgTfjA\nkYB6s7My9VeRJK9fVE+SS5M5VSH7NvQ2dS/4PcXxQ78u8GmtBfywOlRV9exCYppk\n/mPUN/YihqtfehUeqo732zXs0QKBgQC4QpDk/E5hpdERhcdnDs38Pz/OYBHlWXL4\ntgvCdI7JL+0Zfseh0GT5xKxG+CmbGuN+FRxhx4Tp1NqgLd2b4FCT4ONuJ3eg7Dbf\n8SUX6x5jGKLvlznOMNVXz0rNn7ceuUfH8huoie6c3htq9T9WbMayhvt8WJuwrLfG\nkLa4HO6P1QKBgHHxJ/MkSu87YLl9jjdMnz6ZCyirJVYqdMmROjxgGTNVs9b73M30\nsSkMCi++lwxX7m1HP9gwOzPORLWUu05O6Mouoi8ipR5ZKW/0AqcjqsevoxyCC3FO\nkfUIGVfBa41e3gsPt74wObrZFxpEBwSOZsEyibrdGT5cs/+LksGCzzYxAoGBALZo\n96Yo/LOAgwN0y52Ds3nnZ5Q32R+SuNXs6qFb4ErdTjyyHJFdi8kT4XT0kcPCD7ou\nzgUijrsqBDEUltGMdFihBqVzHuPJVN3HjXArS87QgeTsccZk459lUGlVluQsihov\n3R+xRO44ly4Ake5OCzqLlIVZ9u8lXV2Ov8Rup+DtAoGAHNi8Qo6H+l4Mx1yhwA+y\nm9FNSf/7mQMrchyYQ/jsNESiqRwJUxiAvamq2EgTnp6r1IHL0VAzy6FbgBCrgpuJ\n3jGL95BhAuLToyA93paEcs5cDLg5qU8K2mMk+9JkEXRFXW3mTf7pMBGpZ+AsMKnq\nCfeu95qQYAIYd486IFNSrD8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "test-service@zocket-400012.iam.gserviceaccount.com",
+  "client_id": "102668662522186261267",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/test-service%40zocket-400012.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

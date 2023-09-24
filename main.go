@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	initializers "github.com/kkrajkumar1198/Zocket/Initializers"
+	"github.com/kkrajkumar1198/Zocket/cloudbucket"
+	"github.com/kkrajkumar1198/Zocket/controllers"
+	"github.com/kkrajkumar1198/Zocket/initializers"
 )
 
 func init() {
@@ -11,10 +13,11 @@ func init() {
 }
 func main() {
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	r.POST("/createUser", controllers.CreateUser)
+	r.GET("/getUser/:name", controllers.GetUserData)
+	r.GET("/getUsers", controllers.GetUsers)
+	r.PUT("/updateUser/:id", controllers.UpdateUser)
+	// r.DELETE("/deleteUser/:id", controllers.DeleteUser)
+	r.GET("/downloadImage", cloudbucket.DownloadAndSaveImageToLocal)
 	r.Run()
 }

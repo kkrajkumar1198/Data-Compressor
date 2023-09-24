@@ -1,7 +1,7 @@
 package main
 
 import (
-	initializers "github.com/kkrajkumar1198/Zocket/Initializers"
+	"github.com/kkrajkumar1198/Zocket/initializers"
 	"github.com/kkrajkumar1198/Zocket/models"
 )
 
@@ -11,5 +11,6 @@ func init() {
 }
 
 func main() {
-	initializers.DB.AutoMigrate(&models.Users{})
+	initializers.DB.AutoMigrate(&models.User{})
+	initializers.DB.AutoMigrate(&models.Product{})
 }
