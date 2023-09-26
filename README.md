@@ -26,34 +26,49 @@ The following technologies and libraries have been used in this project:
  - go test -timeout 30s -run ^TestKafkaIntegration$ --- *Kafka Connection Test*
 
 ## For Benchmark testing:
- - go test -benchmem -run=^$ -bench ^BenchmarkDownloadAndCompressImages$  --- *DB Connection Test*
+ - go test -benchmem -run=^$ -bench ^BenchmarkDownloadAndCompressImages$  --- *Download and Compression Test*
 
 ## Database Schema
 
 ### Users Table
 
+
 | Column Name | Data Type       | Description                          |
 |-------------|-----------------|--------------------------------------|
-| id          | int (Primary Key)| Unique user identifier              |
-| name        | varchar(50)     | User's name                          |
-| mobile      | int             | Contact number of the user           |
-| latitude    | float64         | Latitude of the user's location      |
-| longitude   | float64         | Longitude of the user's location     |
-| created_at  | timestamp       | Timestamp of user creation           |
-| updated_at  | timestamp       | Timestamp of last update             |
+| ID          | int (Primary Key)| Unique user identifier              |
+| Name        | varchar(50)     | User's name                          |
+| MobileNumber      | int             | Contact number of the user           |
+| Latitude    | float64         | Latitude of the user's location      |
+| Longitude   | float64         | Longitude of the user's location     |
+| DateJoined  | timestamp       | Timestamp of user creation           |
+| UpdatedAt  | timestamp       | Timestamp of last update             |
+| DeletedAt  | timestamp       | Timestamp of user deletion data             |
 
 ### Products Table
 
+
+type Product struct {
+	ProductID               int            `gorm:"primary_key:auto_increment;not_null" json:"id"`
+	ProductName             string         `gorm:"type:varchar(50)" json:"product_name"`
+	ProductDescription      string         `gorm:"text" json:"product_desc"`
+	ProductImages           pq.StringArray `gorm:"type:varchar(250)[]" json:"product_images_name"`
+	ProductPrice            float64        `gorm:"size:10" json:"product_price"`
+	CompressedProductImages pq.StringArray `gorm:"type:varchar(250)[]" json:"compressed_product_images_url"`
+	CreatedAt               string         `json:"created_at"`
+	UpdatedAt               string         `json:"updated_at"`
+	DeletedAt               gorm.DeletedAt `gorm:"index" json:"deleted_at"`
+}
+
 | Column Name               | Data Type       | Description                             |
 |---------------------------|-----------------|-----------------------------------------|
-| product_id                | int (Primary Key)| Unique product identifier              |
-| product_name              | varchar(50)     | Name of the product                     |
-| product_description       | text            | Description of the product              |
-| product_images           | varchar(250)[]   | Array of image URLs associated with the product |
-| product_price             | numeric(10, 2)  | Price of the product                   |
-| compressed_product_images | varchar(250)[]  | Array of compressed image locations    |
-| created_at                | timestamp       | Timestamp of product creation          |
-| updated_at                | timestamp       | Timestamp of last update               |
+| ProductID                | int (Primary Key)| Unique product identifier              |
+| ProductName              | varchar(50)     | Name of the product                     |
+| ProductDescription       | text            | Description of the product              |
+| ProductImages           | varchar(250)[]   | Array of image URLs associated with the product |
+| ProductPrice             | float64  | Price of the product                   |
+| CompressedProductImages | varchar(250)[]  | Array of compressed image locations    |
+| CreatedAt                | timestamp       | Timestamp of product creation          |
+| DeletedAt  | timestamp       | Timestamp of product deletion data             |
 
 ---
 
