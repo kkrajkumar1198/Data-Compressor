@@ -8,6 +8,8 @@ import (
 	"github.com/kkrajkumar1198/Zocket/models"
 )
 
+// All requests are received in Controllers
+
 func CreateUser(c *gin.Context) {
 
 	var data models.User
@@ -58,9 +60,9 @@ func GetUserData(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
-// func DeleteUser(c *gin.Context) {
+func DeleteUser(c *gin.Context) {
 
-// 	id := c.Param("id")
-// 	initializers.DB.Delete(&models.User{}, id)
-// 	c.Status(200)
-// }
+	id := c.Param("id")
+	initializers.DB.Delete(&models.User{}, id)
+	c.Status(200)
+}

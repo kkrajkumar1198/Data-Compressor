@@ -13,7 +13,7 @@ var (
 
 type User struct {
 	ID           int     `gorm:"primary_key:auto_increment;not_null" json:"id"`
-	Name         string  `gorm:"size:50" json:"name"`
+	Name         string  `gorm:"type:varchar(50)" json:"name"`
 	MobileNumber int     `gorm:"size:100" json:"mobile_number"`
 	Latitude     float64 `json:"latitude"`
 	Longitude    float64 `json:"longitude"`
@@ -34,6 +34,7 @@ func (u User) PrintUserData() {
 	fmt.Printf("Deleted At: %s\n", u.DeletedAt.Time.String())
 }
 
+// To fetch All Users Data
 func GetAllUser(db *gorm.DB, user *[]User) (err error) {
 	err = db.Find(user).Error
 	if err != nil {
@@ -42,6 +43,7 @@ func GetAllUser(db *gorm.DB, user *[]User) (err error) {
 	return nil
 }
 
+// To create a new user
 func CreateUser(db *gorm.DB, data *User) (err error) {
 
 	data.DateJoined = currentTime
@@ -54,6 +56,7 @@ func CreateUser(db *gorm.DB, data *User) (err error) {
 	return nil
 }
 
+// To fetch particular User Data by name
 func GetByUsername(db *gorm.DB, data *User, username string) (err error) {
 
 	err = db.Where("name = ?", username).First(data).Error
@@ -64,6 +67,7 @@ func GetByUsername(db *gorm.DB, data *User, username string) (err error) {
 	return nil
 }
 
+// To update particular User Data by id
 func UpdateUserData(db *gorm.DB, data *User, id string) {
 
 	var user *User

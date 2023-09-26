@@ -2,34 +2,41 @@ package initializers
 
 import (
 	"context"
-	"fmt"
+	"log"
 	"sync"
 
 	"cloud.google.com/go/storage"
 	"google.golang.org/api/option"
 )
 
-type storageConnection struct {
-	Client *storage.Client
-}
-
 var (
-	client *storageConnection
-	once   sync.Once
+	gcsClient     *storage.Client
+	gcsClientErr  error
+	gcsClientOnce sync.Once
 )
 
-// GetGCSClient gets singleton object for Google Storage
-func GetGCSClient(ctx context.Context) (*storage.Client, error) {
-	var clientErr error
-	once.Do(func() {
-		storageClient, err := storage.NewClient(ctx, option.WithCredentialsFile("gcp-keys.json"))
-		if err != nil {
-			clientErr = fmt.Errorf("failed to create GCS client error: %s", err.Error())
-		} else {
-			client = &storageConnection{
-				Client: storageClient,
-			}
+const (
+	// GCSBucket name
+	GCSBucket = "zocket-source-imgs"
+	// ProjectID Google Project ID name
+	ProjectID = "zocket-400012"
+	Delimitor = "_"
+)
+
+// GetGCSClient returns a singleton instance of the Google Cloud Storage client.
+func GetGCSClient() (*storage.Client, error) {
+
+	gcsClientOnce.Do(func() {
+
+		ctx := context.Background()
+		CredentialFile := "gcp-keys.json"
+		gcsClient, gcsClientErr = storage.NewClient(ctx, option.WithCredentialsFile(CredentialFile))
+		if gcsClientErr != nil {
+			log.Printf("Failed to create GCS client: %v", gcsClientErr)
+			return
 		}
+
 	})
-	return client.Client, clientErr
+
+	return gcsClient, gcsClientErr
 }

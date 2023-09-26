@@ -1,0 +1,76 @@
+{
+	"info": {
+		"_postman_id": "7585c0bb-b446-4f10-95b2-a3b78e595b4c",
+		"name": "Product Data Processor",
+		"description": "The Product Data Management System is a robust and efficient solution designed to manage product-related data in a distributed environment. It seamlessly handles the storage, processing, and retrieval of product information, making it a vital component for businesses dealing with a diverse range of products.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28725277"
+	},
+	"item": [
+		{
+			"name": "getUniqueUsers",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "getUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:3001/getUsers"
+			},
+			"response": []
+		},
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"raj\",\n    \"mobile_number\":9524422820,\n    \"latitude\":3.1456,\n    \"longitude\":-242.4252\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/createUser",
+				"description": "**Request Body (JSON):**  \n{  \n\"name\": \"Zocket\",  \n\"mobile_number\": \"2323523523\",  \n\"latitude\": 3.1456,  \n\"longitude\": -242.4252  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": "http://localhost:3000/updateUser",
+				"description": "**Request Body (JSON):**\n\n{  \n\"name\": \"\",  \n\"mobile\": \"9876543210\",  \n\"latitude\": 3.1456,  \n\"longitude\": -242.4252  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"id\": 23,\n    \"product_name\": \"Nike\",\n    \"product_desc\": \"Nike\",               \n    \"product_images_name\": \"nike-1.jpg,nike-2.jpg,nike-3.jpg\",\n    \"product_price\":       7999.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "",
+				"description": "{  \n\"user_id\": 1,  \n\"product_name\": \"Nike Shoes\",  \n\"product_description\": \"High-quality running shoes.\",  \n\"product_images\": [\"]()nike-1.jpg,nike-2.jpg,nike-3.jpg\",  \n\"product_price\": 7999.00  \n}"
+			},
+			"response": []
+		}
+	]
+}

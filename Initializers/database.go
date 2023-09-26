@@ -10,9 +10,10 @@ import (
 
 var DB *gorm.DB
 
+// DB Connection
+
 func ConnectToDB() {
 	var err error
-	//postgres://jgkaapdo:6V_h7nwZux95yanKNQFBxoVKpB5ABn99@bubble.db.elephantsql.com/jgkaapdo
 	dsn := os.Getenv("DB_URL")
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

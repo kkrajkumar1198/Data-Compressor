@@ -1,63 +1,103 @@
 package cloudbucket
 
 import (
+	"archive/zip"
+	"context"
 	"fmt"
 	"io"
 	"log"
-	"net/http"
 	"os"
+	"path/filepath"
+	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/kkrajkumar1198/Zocket/initializers"
+	"golang.org/x/sync/errgroup"
 )
 
-// DownloadAndSaveImageToLocal downloads an image file from Google Cloud Storage (GCS)
-// and saves it to the local machine.
-func DownloadAndSaveImageToLocal(ctx *gin.Context) {
-
-	client, err := initializers.GetGCSClient(ctx)
-
+// DownloadAndCompressImages downloads and compresses the specified images from GCS
+// and returns the list of compressed file locations.
+func DownloadAndCompressImages(ImagesNameList []string) ([]string, error) {
+	ctx := context.Background()
+	client, err := initializers.GetGCSClient()
 	if err != nil {
-		log.Fatal(ctx, "Failed to create GCS client: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create GCS client"})
-		return
+		log.Printf("Failed to Connect to GCS Client: %s", err)
+		return nil, err
 	}
 
-	filename := ctx.PostForm("filename") // Get the filename from the route parameter
-
-	// Construct the ob	ject path
-	objectPath := filename // Adjust the path as needed
-	log.Println("asdfasfdasfasdfasfasdfasfasd", objectPath, filename)
-	rc, err := client.Bucket(GCSBucket).Object(objectPath).NewReader(ctx)
-	if err != nil {
-		log.Println(ctx, "Failed to create GCS reader: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to create GCS reader: %v", err)})
-		return
+	// Create a temporary directory to store downloaded images
+	tempDir := "/Users/rk/Documents/assignment/Zocket/savehere/"
+	erro := os.MkdirAll(tempDir, os.ModePerm)
+	if erro != nil {
+		log.Printf("Failed to create a temp folder: %s", erro)
+		return nil, erro
 	}
-	defer rc.Close()
+	defer os.RemoveAll(tempDir)
 
-	// Set the content type based on the image file format (e.g., "image/jpeg", "image/png", etc.)
-	// You may need to determine the content type based on the file extension or other criteria.
-	contentType := "image/jpeg" // Adjust as needed based on your image file format
-	ctx.Header("Content-Type", contentType)
+	// Use an errgroup to synchronize goroutines
+	var eg errgroup.Group
 
-	// Create a file on the local machine to save the downloaded image
-	localFilePath := fmt.Sprintf("/Users/rk/Documents/assignment/Zocket/savehere/%s", filename) // Adjust the local path as needed
-	localFile, err := os.Create(localFilePath)
-	if err != nil {
-		log.Fatal(ctx, "Failed to create local file: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create local file"})
-		return
+	// Slice to store the compressed filenames
+	var compressedFilenames []string
+
+	// Download and compress each file concurrently
+	for _, filename := range ImagesNameList {
+		filename := filename
+
+		eg.Go(func() error {
+			// Remove the file extension
+			baseFilename := strings.TrimSuffix(filename, filepath.Ext(filename))
+
+			// Download the image from GCS
+			object := client.Bucket(initializers.GCSBucket).Object(filename)
+			if object == nil {
+				log.Printf("Failed to create GCS object for file %s", filename)
+				return fmt.Errorf("failed to create gcs object for file %s", filename)
+			}
+			rc, err := object.NewReader(ctx)
+			if err != nil {
+				log.Printf("Failed to create GCS object reader for file %s: %s", filename, err)
+				return err
+			}
+			defer rc.Close()
+
+			// Create a new zip file for this image
+			zipFileName := fmt.Sprintf("/Users/rk/Documents/assignment/Zocket/compressed/%s.zip", baseFilename)
+			zipFile, err := os.Create(zipFileName)
+			if err != nil {
+				log.Printf("Failed to create a Zip folder for file %s: %s", baseFilename, err)
+				return err
+			}
+			defer zipFile.Close()
+
+			// Create a zip writer to write compressed image
+			zipWriter := zip.NewWriter(zipFile)
+			defer zipWriter.Close()
+
+			// Add the image to the zip archive
+			zipImageFile, err := zipWriter.Create(filename)
+			if err != nil {
+				log.Printf("Failed to create zip file for file %s: %s", filename, err)
+				return err
+			}
+
+			// Copy the image content to the zip archive
+			_, err = io.Copy(zipImageFile, rc)
+			if err != nil {
+				log.Printf("Failed to copy image content to zip archive for file %s: %s", filename, err)
+				return err
+			}
+
+			compressedFilenames = append(compressedFilenames, zipFileName)
+
+			return nil
+		})
 	}
-	defer localFile.Close()
 
-	// Copy the image file content to both the response body and the local file
-	if _, err := io.Copy(io.MultiWriter(ctx.Writer, localFile), rc); err != nil {
-		log.Fatal(ctx, "Failed to copy file content: %v", err)
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to copy file content"})
-		return
+	// Wait for all goroutines to complete and handle errors
+	if err := eg.Wait(); err != nil {
+		log.Printf("Failed to download and compress images: %s", err)
+		return nil, err
 	}
 
-	// Optionally, you can send a success response to the client
-	ctx.JSON(http.StatusOK, gin.H{"message": "Image downloaded and saved successfully", "localFilePath": localFilePath})
+	return compressedFilenames, nil
 }
